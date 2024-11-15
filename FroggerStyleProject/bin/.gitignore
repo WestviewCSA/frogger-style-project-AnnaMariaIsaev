@@ -1,4 +1,9 @@
-/Frame.class
-/SimpleAudioPlayer.class
-/Sprite.class
+/RedAlien.class
 /imgs/
+/GreenAlienScroller.class
+/RedAlienScroller.class
+/BlueCometScroll.class
+/BG.class
+/platformScroller.class
+/PlatformScroll.class
+/PlatformScroll2.class
