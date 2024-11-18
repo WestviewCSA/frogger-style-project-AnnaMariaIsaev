@@ -29,7 +29,7 @@ import javax.swing.Timer;
 public class Frame extends JPanel implements ActionListener, MouseListener, KeyListener {
 	
 	//any debugging code we add
-	public static boolean debugging = false;
+	public static boolean debugging = true;
 	
 	
 	
