@@ -47,7 +47,7 @@ public class Frame extends JPanel implements ActionListener, MouseListener, KeyL
 //	Music soundBang = new Music("bang.wav", false);
 //	Music soundHaha = new Music("haha.wav", false);
 	
-	public boolean riding = false;
+	public boolean riding;
 	
 	BG bg2 = new BG();
 	
@@ -71,13 +71,19 @@ public class Frame extends JPanel implements ActionListener, MouseListener, KeyL
 
 	public void paint(Graphics g) {
 		super.paintComponent(g);
-		
+		riding = false;
 		
 		bg2.paint(g);
 		
 		
 		for(PlatformScroll obj : row3) {
 			obj.paint(g);
+			
+		/*	if(obj.collided(mainAlien)){
+				riding = true;
+				mainAlien.setVx(4);
+				break;
+			} */
 		}
 		
 		
@@ -87,12 +93,12 @@ public class Frame extends JPanel implements ActionListener, MouseListener, KeyL
 		}
 		
 for(PlatformScroll obj : row3) {
-			
-			if(obj.collided(mainAlien)) {
-				mainAlien.setVx(4);
+		
+		if(obj.collided(mainAlien)) {
 				riding = true;
+				mainAlien.setVx(4);
 				break;
-			} else {
+			} else if(!obj.collided(mainAlien)) {
 				riding = false;
 			}
 		}
@@ -103,9 +109,7 @@ for(PlatformScroll obj : row3) {
 			mainAlien.setVx(-5);
 			riding = true;
 			break;
-		} else {
-			riding = false;
-		}
+		} 
 	}
 		
 		mainAlien.paint(g);
@@ -137,20 +141,25 @@ for(PlatformScroll obj : row3) {
 		
 		
 	
-		if((!riding && mainAlien.getY() <= 270 && mainAlien.getY() >=245)) {
+		if((!riding)) {
+
 			mainAlien.setVx(0);
-			System.out.println("danger zone");
-			mainAlien.setCoord(600/2-mainAlien.getWidth(), 505);
+			
+			if(mainAlien.getY() <= 272 && mainAlien.getY() >=220) {
+				System.out.println("danger zone");
+				mainAlien.setCoord(600/2-mainAlien.getWidth(), 505);
+			}
+		
 		} /* else if(!riding && mainAlien.getY() <= 200 && mainAlien.getY() >= 190) {
 			mainAlien.setVx(0);
 			System.out.println("danger zone");
 			mainAlien.setCoord(600/2-mainAlien.getWidth(), 505);
 		}
 		*/
-		else if(!riding) {
-			mainAlien.setVx(0);
+		//else if(!riding) {
+		//	mainAlien.setVx(0);
 			
-		}
+		//}
 		
 		
 			
@@ -273,6 +282,7 @@ for(PlatformScroll obj : row3) {
 		if(arg0.getKeyCode()==87 || arg0.getKeyCode()==38){
 			//move up
 			mainAlien.move(0);
+			System.out.println(riding);
 		} else if(arg0.getKeyCode()==83 || arg0.getKeyCode()==40) {
 			//move down
 			mainAlien.move(1);
