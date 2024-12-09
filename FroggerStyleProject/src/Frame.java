@@ -89,7 +89,7 @@ public class Frame extends JPanel implements ActionListener, MouseListener, KeyL
 			heart.paint(g);
 		}
 		
-		
+		//debug
 		
 		for(PlatformScroll obj : row3) {
 			obj.paint(g);
