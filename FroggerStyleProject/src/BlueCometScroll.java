@@ -39,7 +39,7 @@ public class BlueCometScroll{
 		x = 600/2-width/2;
 		y = 600;
 		
-		vx = -7;
+		vx = -5;
 		vy = 0;
 		
 		tx = AffineTransform.getTranslateInstance(0, 0);

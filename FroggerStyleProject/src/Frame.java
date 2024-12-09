@@ -17,7 +17,7 @@ import java.awt.event.KeyListener;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.net.URL;
-
+import java.util.ArrayList;
 
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
@@ -31,25 +31,18 @@ public class Frame extends JPanel implements ActionListener, MouseListener, KeyL
 	//any debugging code we add
 	public static boolean debugging = true;
 	
-	
-	
-	private Image bg = getImage("/imgs/"+ "BG.png"); 
-	
-	//Timer related variables
-	int waveTimer = 5; //each wave of enemies is 20s
-	long ellapseTime = 0;
-	Font timeFont = new Font("Courier", Font.BOLD, 70);
-	int level = 0;
-	
+
+
+	Font timeFont = new Font("Courier", Font.BOLD, 70);	
 	
 	Font myFont = new Font("Courier", Font.BOLD, 40);
-	SimpleAudioPlayer backgroundMusic = new SimpleAudioPlayer("scifi.wav", false);
+	SimpleAudioPlayer backgroundMusic = new SimpleAudioPlayer("retro.wav", false);
 //	Music soundBang = new Music("bang.wav", false);
 //	Music soundHaha = new Music("haha.wav", false);
 	
-	public boolean riding;
 	
 	BG bg2 = new BG();
+	
 	
 	//create alien objects
 	GreenAlien mainAlien = new GreenAlien();
@@ -62,18 +55,40 @@ public class Frame extends JPanel implements ActionListener, MouseListener, KeyL
 	int width = 600;
 	int height = 600;	
 	
+	
 	RedAlienScroller[] row1 = new RedAlienScroller[4];
 	BlueCometScroll[] row2 = new BlueCometScroll[5];
 	PlatformScroll[] row3 = new PlatformScroll[3];
-	PlatformScroll2[] row4 = new PlatformScroll2[3];
 	RedAlienScroller[] row5 = new RedAlienScroller[4];
+	BlueCometScroll[] row6 = new BlueCometScroll[5];
 	
+	Lives h1 = new Lives();
+	Lives h2 = new Lives();
+	Lives h3 = new Lives();
+	Lives h4 = new Lives();
+	
+	ArrayList<Lives> hearts = new ArrayList<Lives>();
+	
+	GameOver lose = new GameOver();
+	
+	YouWin win = new YouWin();
 
 	public void paint(Graphics g) {
 		super.paintComponent(g);
-		riding = false;
+		
+		boolean riding1 = false;
+		
+		int hit = 0;
+		
+		int rode = 0;
+		
 		
 		bg2.paint(g);
+		
+		for(Lives heart : hearts) {
+			heart.paint(g);
+		}
+		
 		
 		
 		for(PlatformScroll obj : row3) {
@@ -87,30 +102,36 @@ public class Frame extends JPanel implements ActionListener, MouseListener, KeyL
 		}
 		
 		
-		for(PlatformScroll2 obj4 : row4) {
-			obj4.paint(g);;
-				
-		}
+	if(mainAlien.getY() <= 0) {
+		win.setX(-20);
+	}
+	
+	if(hearts.size() == 0) {
+		lose.setX(-10);
+	}
+	if((!riding1)) {
+		mainAlien.setVx(mainAlien.vx);
+		
+		
+	}
+
 		
 for(PlatformScroll obj : row3) {
 		
 		if(obj.collided(mainAlien)) {
-				riding = true;
+				riding1 = true;
 				mainAlien.setVx(4);
+				rode = 1;
 				break;
 			} else if(!obj.collided(mainAlien)) {
-				riding = false;
+				riding1 = false;
+				break;
+
 			}
 		}
+
+
 	
-	for(PlatformScroll2 obj : row4) {
-		
-		if(obj.collided(mainAlien)) {
-			mainAlien.setVx(-5);
-			riding = true;
-			break;
-		} 
-	}
 		
 		mainAlien.paint(g);
 		//newAlien2.paint(g);
@@ -120,6 +141,12 @@ for(PlatformScroll obj : row3) {
 			obj.paint(g);
 			if(obj.collided(mainAlien)) {
 				mainAlien.setCoord(600/2-mainAlien.getWidth(), 505);
+				
+				hit++;
+				hearts.remove(hearts.size()-hit);
+			
+			System.out.println("coll: " + hit);
+			System.out.println("size: " + hearts.size());
 			}
 		}
 	
@@ -128,6 +155,9 @@ for(PlatformScroll obj : row3) {
 			obj.paint(g);
 			if(obj.collided(mainAlien)) {
 				mainAlien.setCoord(600/2-mainAlien.getWidth(), 505);
+				
+				hit++;
+				hearts.remove(hearts.size()-hit);
 			}
 		}
 		
@@ -136,32 +166,60 @@ for(PlatformScroll obj : row3) {
 			
 			if(obj.collided(mainAlien)) {
 				mainAlien.setCoord(600/2-mainAlien.getWidth(), 505);
+				
+				hit++;
+				hearts.remove(hearts.size()-hit);
+			}
+		}
+		
+		for(BlueCometScroll obj : row6) {
+			obj.paint(g);
+			
+			if(obj.collided(mainAlien)) {
+				mainAlien.setCoord(600/2-mainAlien.getWidth(), 505);
+				
+				hit++;
+				hearts.remove(hearts.size()-hit);
+				
 			}
 		}
 		
 		
-	
-		if((!riding)) {
-
-			mainAlien.setVx(0);
 			
-			if(mainAlien.getY() <= 272 && mainAlien.getY() >=220) {
-				System.out.println("danger zone");
-				mainAlien.setCoord(600/2-mainAlien.getWidth(), 505);
-			}
 		
-		} /* else if(!riding && mainAlien.getY() <= 200 && mainAlien.getY() >= 190) {
+		
+		if(!riding1 && mainAlien.getY() <= 278 && mainAlien.getY() >=224) {
+			System.out.println("danger zone");
+			mainAlien.setCoord(600/2-mainAlien.getWidth(), 505);
+			
+			hit++;
+			hearts.remove(hearts.size()-hit);
+		}
+		
+		win.paint(g);
+		lose.paint(g);
+		
+		
+		/* else if(!riding && mainAlien.getY() <= 200 && mainAlien.getY() >= 190) {
 			mainAlien.setVx(0);
 			System.out.println("danger zone");
 			mainAlien.setCoord(600/2-mainAlien.getWidth(), 505);
 		}
 		*/
-		//else if(!riding) {
-		//	mainAlien.setVx(0);
-			
-		//}
+		
+		if(!riding1) {
+			if(rode == 1) {
+				mainAlien.setVx(0);
+				rode = 0;
+				
+			}
+	
+		}
 		
 		
+
+		
+
 			
 				
 				
@@ -172,17 +230,20 @@ for(PlatformScroll obj : row3) {
 	public static void main(String[] arg) {
 		Frame f = new Frame();
 		
+	
 	}
 	public Frame() {
 		JFrame f = new JFrame("Duck Hunt");
 		f.setSize(new Dimension(width, height));
 		f.setBackground(Color.white);
 		f.add(this);
+		
 		f.setResizable(false);
  		f.addMouseListener(this);
 		f.addKeyListener(this);
 	
-		backgroundMusic.play();
+			backgroundMusic.play();
+		
 		
 		for(int i = 0; i < row1.length; i++) {
 			row1[i] = new RedAlienScroller(i*210, 420);
@@ -195,18 +256,20 @@ for(PlatformScroll obj : row3) {
 		for(int i = 0; i < row3.length; i++) {
 			row3[i] = new PlatformScroll(i*310, 205);
 		}
-		
-		for(int i = 0; i < row4.length; i++) {
-			row4[i] = new PlatformScroll2(i*280, 120);
-		}
-		
+				
 		for(int i = 0; i < row5.length; i++) {
-			row5[i] = new RedAlienScroller(i*220, 75);
+			row5[i] = new RedAlienScroller(i*220, 65);
 		}
 		
+		for(int i = 0; i < row2.length; i++) {
+			row6[i] = new BlueCometScroll(i*180, 150);
+		}
 		
-	
-
+		for(int i = 0; i < 5; i++) {
+			hearts.add(i, new Lives(i*30, 0));
+			//hearts[i] = new Lives(i*180, 150);
+		}
+		
 		
 		//the cursor image must be outside of the src folder
 		//you will need to import a couple of classes to make it fully 
@@ -278,12 +341,12 @@ for(PlatformScroll obj : row3) {
 		// TODO Auto-generated method stub
 		System.out.println(arg0.getKeyCode());
 		
-		
+
 		if(arg0.getKeyCode()==87 || arg0.getKeyCode()==38){
 			//move up
 			mainAlien.move(0);
-			System.out.println(riding);
-		} else if(arg0.getKeyCode()==83 || arg0.getKeyCode()==40) {
+		} 
+		else if(arg0.getKeyCode()==83 || arg0.getKeyCode()==40) {
 			//move down
 			mainAlien.move(1);
 		} else if(arg0.getKeyCode()==65 || arg0.getKeyCode()==37) {
@@ -292,7 +355,7 @@ for(PlatformScroll obj : row3) {
 		} else if(arg0.getKeyCode()==68 || arg0.getKeyCode()==39) {
 			//move right
 			mainAlien.move(3);
-		}
+		} 
 		
 		
 		
@@ -302,27 +365,30 @@ for(PlatformScroll obj : row3) {
 	public void keyReleased(KeyEvent arg0) {
 		// TODO Auto-generated method stub
 		
+		if(arg0.getKeyCode()==87 || arg0.getKeyCode()==38){
+			//move up
+			mainAlien.setVy(0);
+			
+		} else if(arg0.getKeyCode()==83 || arg0.getKeyCode()==40) {
+			//move down
+			mainAlien.setVy(0);
+		} else if(arg0.getKeyCode()==65 || arg0.getKeyCode()==37) {
+			//move left
+			mainAlien.setVx(0);
+		} else if(arg0.getKeyCode()==68 || arg0.getKeyCode()==39) {
+			//move right
+			mainAlien.setVx(0);
+		} 
+		
 	}
 
 	@Override
 	public void keyTyped(KeyEvent arg0) {
 		// TODO Auto-generated method stub
-	/* if(arg0.getKeyCode()==38) {
 		
-	}
-	*/
 		
 	}
 	
-	private Image getImage(String path) {
-		Image tempImage = null;
-		try {
-			URL imageURL = GreenAlien.class.getResource(path);
-			tempImage = Toolkit.getDefaultToolkit().getImage(imageURL);
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-		return tempImage;
-	}
+
 
 }

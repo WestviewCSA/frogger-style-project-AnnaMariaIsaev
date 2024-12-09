@@ -19,7 +19,7 @@ public class BG{
 	double scaleHeight = 1.1; 		//change to scale image
 
 	public BG() {
-		forward 	= getImage("/imgs/"+"BG.png"); //load the image for Tree
+		forward 	= getImage("/imgs/"+"cyberPunkStyleBackground.gif"); //load the image for Tree
 		//backward 	= getImage("/imgs/"+"backward.png"); //load the image for Tree
 		//left 		= getImage("/imgs/"+"left.png"); //load the image for Tree
 		//right 		= getImage("/imgs/"+"right.png"); //load the image for Tree

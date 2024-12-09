@@ -62,16 +62,20 @@ public class GreenAlien{
 	public void move(int dir) {
 		switch(dir) {
 		case 0: //hop up
-			y -= (height + 3);
+			//y -= (height + 3);
+			vy= -4;
 			break;
 		case 1: //hop down
-			y+= (height + 3);
+			//y+= (height + 3);
+			vy= 4;
 			break;
 		case 2: //hop left
-			x -= width;
+			//x -= width;
+			vx= -4;
 			break;
 		case 3: // hop right
-			x+= width;
+			//x+= width;
+			vx= 4;
 			break;
 			
 		}
@@ -92,6 +96,11 @@ public class GreenAlien{
 	public int getHeight() {
 		return height;
 	}
+	
+	public void setVy(int up) {
+		vy = up;
+	}
+	
 	
 	public void setCoord(int newX, int newY) {
 		x = newX;

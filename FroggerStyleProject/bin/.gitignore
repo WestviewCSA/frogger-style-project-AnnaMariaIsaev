@@ -1,9 +1,6 @@
-/RedAlien.class
+/YouWin.class
+/alienMusic.wav
 /imgs/
-/GreenAlienScroller.class
-/RedAlienScroller.class
-/BlueCometScroll.class
-/BG.class
-/platformScroller.class
-/PlatformScroll.class
-/PlatformScroll2.class
+/Lives.class
+/GameOver.class
+/retro.wav

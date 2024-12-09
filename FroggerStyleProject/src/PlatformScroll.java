@@ -123,7 +123,7 @@ public class PlatformScroll{
 				character.getHeight()
 				);
 		
-		Rectangle thisObject = new Rectangle(pX, pY-4, newWidth, newHeight);
+		Rectangle thisObject = new Rectangle(pX, pY-4 , newWidth, newHeight);
 		
 		//user built in method to check intersection
 				
